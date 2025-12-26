@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
     fun getTopAnime(): Flow<PagingData<Anime>>
+    suspend fun getAnimeById(animeId: Int): Anime?
 }
 

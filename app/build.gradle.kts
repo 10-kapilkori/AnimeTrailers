@@ -73,6 +73,8 @@ dependencies {
     // ExoPlayer
     implementation(libs.exoplayer.core)
     implementation(libs.exoplayer.ui)
+    implementation(libs.exoplayer.hls)
+    implementation(libs.exoplayer.dash)
     
     // Glide
     implementation(libs.glide)
@@ -97,4 +99,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    
+    // YouTube Player
+    implementation(libs.youtube.player)
 }

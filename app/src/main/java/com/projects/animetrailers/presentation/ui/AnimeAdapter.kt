@@ -10,7 +10,9 @@ import com.projects.animetrailers.R
 import com.projects.animetrailers.databinding.ItemAnimeBinding
 import com.projects.animetrailers.domain.model.Anime
 
-class AnimeAdapter : PagingDataAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
+class AnimeAdapter(
+    private val onItemClick: (Anime) -> Unit
+) : PagingDataAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
         val binding = ItemAnimeBinding.inflate(
@@ -18,7 +20,7 @@ class AnimeAdapter : PagingDataAdapter<Anime, AnimeAdapter.AnimeViewHolder>(Anim
             parent,
             false
         )
-        return AnimeViewHolder(binding)
+        return AnimeViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
@@ -29,7 +31,8 @@ class AnimeAdapter : PagingDataAdapter<Anime, AnimeAdapter.AnimeViewHolder>(Anim
     }
 
     inner class AnimeViewHolder(
-        private val binding: ItemAnimeBinding
+        private val binding: ItemAnimeBinding,
+        private val onItemClick: (Anime) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(anime: Anime) {
@@ -46,6 +49,11 @@ class AnimeAdapter : PagingDataAdapter<Anime, AnimeAdapter.AnimeViewHolder>(Anim
                     .error(R.drawable.ic_launcher_background)
                     .centerCrop()
                     .into(imageViewPoster)
+
+                // Set click listener
+                root.setOnClickListener {
+                    onItemClick(anime)
+                }
             }
         }
     }

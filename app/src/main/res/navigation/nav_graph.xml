@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.projects.animetrailers.presentation.ui.HomeFragment"
+        android:label="Anime List"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/animeDetailFragment"
+        android:name="com.projects.animetrailers.presentation.ui.AnimeDetailFragment"
+        android:label="Anime Details"
+        tools:layout="@layout/fragment_anime_detail">
+        <argument
+            android:name="animeId"
+            app:argType="integer" />
+    </fragment>
+
+</navigation>
+
