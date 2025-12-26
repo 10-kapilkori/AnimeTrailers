@@ -2,4 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Semantic Colors - Light Mode -->
+    <color name="app_background">#F2F2F2</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="text_primary">#120F16</color>
+    <color name="text_secondary">#757575</color>
+    <color name="chip_bg_purple">#EDE7F6</color>
+    <color name="chip_text_purple">#6200EA</color>
+    <color name="chip_bg_gray">#EEEEEE</color>
+    <color name="chip_text_gray">#616161</color>
+    <color name="rating_star">#FFD700</color>
+    <color name="error_color">#D32F2F</color>
 </resources>

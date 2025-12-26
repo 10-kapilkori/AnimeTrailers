@@ -38,9 +38,24 @@ class AnimeAdapter(
         fun bind(anime: Anime) {
             binding.apply {
                 textViewTitle.text = anime.title
-                textViewEpisodes.text = "Episodes: ${anime.episodes}"
-                textViewRating.text = "Rating: ${anime.rating}"
-                textViewGenres.text = anime.genres.joinToString(", ")
+                textViewEpisodes.text = "${anime.episodes} Ep"
+                textViewRating.text = "${anime.rating}"
+                
+                // Handle Genres
+                val genres = anime.genres
+                if (genres.isNotEmpty()) {
+                    chipGenre1.text = genres[0]
+                    chipGenre1.visibility = android.view.View.VISIBLE
+                } else {
+                    chipGenre1.visibility = android.view.View.GONE
+                }
+
+                if (genres.size > 1) {
+                    chipGenre2.text = genres[1]
+                    chipGenre2.visibility = android.view.View.VISIBLE
+                } else {
+                    chipGenre2.visibility = android.view.View.GONE
+                }
 
                 // Load image using Glide
                 Glide.with(imageViewPoster.context)

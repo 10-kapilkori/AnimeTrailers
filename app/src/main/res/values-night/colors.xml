@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Semantic Colors - Dark Mode -->
+    <color name="app_background">#120F16</color>
+    <color name="card_background">#1F1B24</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="chip_bg_purple">#6200EA</color>
+    <color name="chip_text_purple">#B39DDB</color>
+    <color name="chip_bg_gray">#424242</color>
+    <color name="chip_text_gray">#B0BEC5</color>
+    <color name="rating_star">#FFD700</color>
+    <color name="error_color">#EF9A9A</color>
+</resources>
