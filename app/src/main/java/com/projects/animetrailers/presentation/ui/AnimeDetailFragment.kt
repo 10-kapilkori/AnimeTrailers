@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -69,9 +70,8 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
     private fun displayAnimeDetails(anime: com.projects.animetrailers.domain.model.Anime) {
         binding.apply {
             textViewTitle.text = anime.title
-            textViewRating.text = "Rating: ${anime.rating}"
-            textViewEpisodes.text = "Episodes: ${anime.episodes}"
-            textViewGenres.text = anime.genres.joinToString(", ")
+            textViewRating.text = "${anime.rating}"
+            textViewEpisodes.text = "${anime.episodes} Episodes"
             textViewSynopsis.text = anime.synopsis
             textViewCast.text = if (anime.mainCast.isNotEmpty()) {
                 anime.mainCast.joinToString(", ")
@@ -79,11 +79,39 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
                 "No cast information available"
             }
 
-            // Handle trailer or poster image
-            if (anime.trailerUrl != null && anime.trailerUrl.isNotEmpty()) {
-                setupVideoPlayer(anime.trailerUrl)
+            // Genres
+            if (anime.genres.isNotEmpty()) {
+                chipGenre1.text = anime.genres[0]
+                chipGenre1.visibility = View.VISIBLE
             } else {
-                showPosterImage(anime.posterImageUrl)
+                chipGenre1.visibility = View.GONE
+            }
+
+            if (anime.genres.size > 1) {
+                chipGenre2.text = anime.genres[1]
+                chipGenre2.visibility = View.VISIBLE
+            } else {
+                chipGenre2.visibility = View.GONE
+            }
+
+            // Year (Placeholder - hide for now as we don't have data)
+            textViewYear.visibility = View.GONE
+
+            // Back Button
+            buttonBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            // Handle trailer or poster image
+            showPosterImage(anime.posterImageUrl)
+
+            if (anime.trailerUrl != null && anime.trailerUrl.isNotEmpty()) {
+                buttonPlay.visibility = View.VISIBLE
+                buttonPlay.setOnClickListener {
+                    setupVideoPlayer(anime.trailerUrl)
+                }
+            } else {
+                buttonPlay.visibility = View.GONE
             }
         }
     }
@@ -91,6 +119,7 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
     private fun setupVideoPlayer(trailerUrl: String) {
         binding.apply {
             imageViewPoster.visibility = View.GONE
+            buttonPlay.visibility = View.GONE
 
             // Try to extract YouTube ID
             val youtubeId = extractYouTubeId(trailerUrl)
@@ -117,7 +146,7 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
                 url.contains("youtu.be/") -> {
                     url.substringAfter("youtu.be/").substringBefore("?")
                 }
-                
+
                 url.contains("/embed/") -> {
                     url.substringAfter("/embed/").substringBefore("?")
                 }
@@ -235,4 +264,3 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
         _binding = null
     }
 }
-

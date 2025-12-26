@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,50 +10,64 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingBottom="24dp">
 
-        <!-- Video Player or Poster Image -->
+        <!-- Header: Video/Image + Overlays -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/videoContainer"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:minHeight="200dp"
-            app:layout_constraintDimensionRatio="16:9"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintDimensionRatio="H,16:9"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                 android:id="@+id/youtubePlayerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/playerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:visibility="gone"
+                app:use_controller="true" />
+
+            <ImageView
+                android:id="@+id/imageViewPoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/ic_launcher_background" />
+
+            <!-- Play Button Overlay -->
+            <ImageButton
+                android:id="@+id/buttonPlay"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/bg_circle_translucent"
+                android:src="@drawable/ic_play_arrow"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                android:tint="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.media3.ui.PlayerView
-                android:id="@+id/playerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+            <!-- Back Button Overlay -->
+            <ImageButton
+                android:id="@+id/buttonBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_circle_translucent"
+                android:src="@drawable/ic_arrow_back"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:tint="@android:color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:use_controller="true" />
-
-            <ImageView
-                android:id="@+id/imageViewPoster"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_launcher_background" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,6 +76,7 @@
             android:id="@+id/textViewTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/text_primary"
@@ -68,98 +84,166 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/videoContainer"
-            tools:text="Anime Title" />
+            tools:text="Cyberpunk: Edgerunners" />
 
-        <!-- Rating -->
-        <TextView
-            android:id="@+id/textViewRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/text_secondary"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTitle"
-            tools:text="Rating: 9.5" />
-
-        <!-- Episodes -->
-        <TextView
-            android:id="@+id/textViewEpisodes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/text_secondary"
-            app:layout_constraintBaseline_toBaselineOf="@id/textViewRating"
-            app:layout_constraintStart_toEndOf="@id/textViewRating"
-            tools:text="Episodes: 24" />
-
-        <!-- Genres -->
-        <TextView
-            android:id="@+id/textViewGenres"
+        <!-- Metadata Row -->
+        <LinearLayout
+            android:id="@+id/layoutMetadata"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="@color/text_secondary"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewRating"
-            tools:text="Action, Adventure, Drama" />
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitle">
 
-        <!-- Synopsis Label -->
+            <!-- Rating Badge -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rating_badge"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_star_filled"
+                    app:tint="#212121" />
+
+                <TextView
+                    android:id="@+id/textViewRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="#212121"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="9.8" />
+            </LinearLayout>
+
+            <!-- Episodes -->
+            <TextView
+                android:id="@+id/textViewEpisodes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                tools:text="10 Episodes" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="•"
+                android:textColor="@color/text_secondary" />
+
+            <!-- Year (Placeholder) -->
+            <TextView
+                android:id="@+id/textViewYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:text="2022" />
+
+        </LinearLayout>
+
+
+        <!-- Genres -->
+        <LinearLayout
+            android:id="@+id/layoutGenres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@id/layoutMetadata">
+
+            <TextView
+                android:id="@+id/chipGenre1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_chip_purple"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:textColor="@color/chip_text_purple"
+                android:textSize="12sp"
+                tools:text="Sci-Fi" />
+
+            <TextView
+                android:id="@+id/chipGenre2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_chip_gray"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:textColor="@color/chip_text_gray"
+                android:textSize="12sp"
+                tools:text="Psychological" />
+        </LinearLayout>
+
+        <!-- Synopsis -->
         <TextView
             android:id="@+id/textViewSynopsisLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:text="Synopsis"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="@color/text_primary"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewGenres" />
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@id/layoutGenres" />
 
-        <!-- Synopsis -->
         <TextView
             android:id="@+id/textViewSynopsis"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:lineSpacingExtra="4dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/text_secondary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
             app:layout_constraintTop_toBottomOf="@id/textViewSynopsisLabel"
-            tools:text="This is a long synopsis that describes the anime plot in detail..." />
+            tools:text="In a dystopia riddled with corruption..." />
 
-        <!-- Main Cast Label -->
+        <!-- Main Characters -->
         <TextView
             android:id="@+id/textViewCastLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Main Cast"
+            android:layout_marginTop="24dp"
+            android:text="Main Characters"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="@color/text_primary"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
             app:layout_constraintTop_toBottomOf="@id/textViewSynopsis" />
 
-        <!-- Main Cast -->
         <TextView
             android:id="@+id/textViewCast"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/text_secondary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
             app:layout_constraintTop_toBottomOf="@id/textViewCastLabel"
-            tools:text="Character 1, Character 2, Character 3" />
+            tools:text="David, Lucy, Maine, Rebecca" />
 
-        <!-- Loading Indicator -->
+        <!-- Loading & Error -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
