@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AnimeTrailers</string>
+    <string name="poster_image">Anime poster image</string>
 </resources>
