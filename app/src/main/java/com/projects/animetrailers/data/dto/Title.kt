@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Title(
     @Json(name = "title")
-    val title: String,
+    val title: String? = null,
     @Json(name = "type")
-    val type: String
+    val type: String? = null
 )

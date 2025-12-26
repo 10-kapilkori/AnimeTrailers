@@ -2,15 +2,15 @@ package com.projects.animetrailers.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.projects.animetrailers.R
 import com.projects.animetrailers.databinding.ItemAnimeBinding
 import com.projects.animetrailers.domain.model.Anime
 
-class AnimeAdapter : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
+class AnimeAdapter : PagingDataAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
         val binding = ItemAnimeBinding.inflate(
@@ -22,7 +22,10 @@ class AnimeAdapter : ListAdapter<Anime, AnimeAdapter.AnimeViewHolder>(AnimeDiffC
     }
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val anime = getItem(position)
+        anime?.let {
+            holder.bind(it)
+        }
     }
 
     inner class AnimeViewHolder(

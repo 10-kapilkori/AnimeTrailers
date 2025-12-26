@@ -7,75 +7,75 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Data(
     @Json(name = "aired")
-    val aired: Aired,
+    val aired: Aired? = Aired(),
     @Json(name = "airing")
-    val airing: Boolean,
+    val airing: Boolean? = false,
     @Json(name = "approved")
-    val approved: Boolean,
+    val approved: Boolean? = false,
     @Json(name = "background")
-    val background: String,
+    val background: String? = "",
     @Json(name = "broadcast")
-    val broadcast: Broadcast,
+    val broadcast: Broadcast? = Broadcast(),
     @Json(name = "demographics")
-    val demographics: List<Demographic>,
+    val demographics: List<Any?>? = listOf(),
     @Json(name = "duration")
-    val duration: String,
+    val duration: String? = "",
     @Json(name = "episodes")
-    val episodes: Int,
+    val episodes: Int? = 0,
     @Json(name = "explicit_genres")
-    val explicitGenres: List<Any?>,
+    val explicitGenres: List<Any?>? = listOf(),
     @Json(name = "favorites")
-    val favorites: Int,
+    val favorites: Int? = 0,
     @Json(name = "genres")
-    val genres: List<Genre>,
+    val genres: List<Genre>? = listOf(),
     @Json(name = "images")
-    val images: Images,
+    val images: Images? = Images(),
     @Json(name = "licensors")
-    val licensors: List<Licensor>,
+    val licensors: List<Licensor>? = listOf(),
     @Json(name = "mal_id")
-    val malId: Int,
+    val malId: Int? = 0,
     @Json(name = "members")
-    val members: Int,
+    val members: Int? = 0,
     @Json(name = "popularity")
-    val popularity: Int,
+    val popularity: Int? = 0,
     @Json(name = "producers")
-    val producers: List<Producer>,
+    val producers: List<Producer>? = listOf(),
     @Json(name = "rank")
-    val rank: Int,
+    val rank: Int? = 0,
     @Json(name = "rating")
-    val rating: String,
+    val rating: String? = "",
     @Json(name = "score")
-    val score: Double,
+    val score: Double? = 0.0,
     @Json(name = "scored_by")
-    val scoredBy: Int,
+    val scoredBy: Int? = 0,
     @Json(name = "season")
-    val season: String? = null,
+    val season: String? = "",
     @Json(name = "source")
-    val source: String,
+    val source: String? = "",
     @Json(name = "status")
-    val status: String,
+    val status: String? = "",
     @Json(name = "studios")
-    val studios: List<Studio>,
+    val studios: List<Studio>? = listOf(),
     @Json(name = "synopsis")
-    val synopsis: String,
+    val synopsis: String? = "",
     @Json(name = "themes")
-    val themes: List<Any?>,
+    val themes: List<Theme>? = listOf(),
     @Json(name = "title")
-    val title: String,
+    val title: String? = "",
     @Json(name = "title_english")
-    val titleEnglish: String? = null,
+    val titleEnglish: String? = "",
     @Json(name = "title_japanese")
-    val titleJapanese: String? = null,
+    val titleJapanese: String? = "",
     @Json(name = "title_synonyms")
-    val titleSynonyms: List<String>,
+    val titleSynonyms: List<Any?>? = listOf(),
     @Json(name = "titles")
-    val titles: List<Title>,
+    val titles: List<Title>? = listOf(),
     @Json(name = "trailer")
-    val trailer: Trailer? = null,
+    val trailer: Trailer? = Trailer(),
     @Json(name = "type")
-    val type: String,
+    val type: String? = "",
     @Json(name = "url")
-    val url: String,
+    val url: String? = "",
     @Json(name = "year")
-    val year: Int? = null
+    val year: Int? = 0
 )

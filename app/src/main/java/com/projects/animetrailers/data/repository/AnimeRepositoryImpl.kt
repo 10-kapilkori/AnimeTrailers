@@ -1,25 +1,30 @@
 package com.projects.animetrailers.data.repository
 
-import com.projects.animetrailers.data.datasource.remote.AnimeRemoteDataSource
-import com.projects.animetrailers.data.datasource.remote.ApiState
-import com.projects.animetrailers.data.mapper.AnimeMapper.toDomain
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.projects.animetrailers.data.datasource.remote.AnimePagingSource
+import com.projects.animetrailers.data.datasource.remote.JikanApiService
 import com.projects.animetrailers.domain.model.Anime
 import com.projects.animetrailers.domain.repository.AnimeRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AnimeRepositoryImpl(
-    private val remoteDataSource: AnimeRemoteDataSource
+class AnimeRepositoryImpl @Inject constructor(
+    private val apiService: JikanApiService
 ) : AnimeRepository {
 
-    override suspend fun getTopAnime(page: Int, limit: Int): ApiState<List<Anime>> {
-        return when (val result = remoteDataSource.getTopAnime(page, limit)) {
-            is ApiState.Loading -> ApiState.Loading
-            is ApiState.Success -> {
-                val animeList = result.data.data.toDomain()
-                ApiState.Success(animeList)
+    override fun getTopAnime(): Flow<PagingData<Anime>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 25,
+                enablePlaceholders = false,
+                prefetchDistance = 5
+            ),
+            pagingSourceFactory = {
+                AnimePagingSource(apiService)
             }
-
-            is ApiState.Error -> ApiState.Error(result.message, result.throwable)
-        }
+        ).flow
     }
 }
 

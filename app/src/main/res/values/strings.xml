@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AnimeTrailers</string>
     <string name="poster_image">Anime poster image</string>
+    <string name="loading_more_anime">Loading more anime…</string>
 </resources>

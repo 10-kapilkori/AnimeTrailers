@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Jpg(
     @Json(name = "image_url")
-    val imageUrl: String,
+    val imageUrl: String? = null,
     @Json(name = "large_image_url")
-    val largeImageUrl: String,
+    val largeImageUrl: String? = null,
     @Json(name = "small_image_url")
-    val smallImageUrl: String
+    val smallImageUrl: String? = null
 )

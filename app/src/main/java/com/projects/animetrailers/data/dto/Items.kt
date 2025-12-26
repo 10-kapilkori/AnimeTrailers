@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Items(
     @Json(name = "count")
-    val count: Int,
+    val count: Int? = null,
     @Json(name = "per_page")
-    val perPage: Int,
+    val perPage: Int? = null,
     @Json(name = "total")
-    val total: Int
+    val total: Int? = null
 )

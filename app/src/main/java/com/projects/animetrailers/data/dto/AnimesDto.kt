@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class AnimesDto(
     @Json(name = "data")
-    val `data`: List<Data>,
+    val `data`: List<Data>? = listOf(),
     @Json(name = "pagination")
-    val pagination: Pagination
+    val pagination: Pagination? = Pagination()
 )

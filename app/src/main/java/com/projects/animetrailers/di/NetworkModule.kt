@@ -83,9 +83,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAnimeRepository(
-        remoteDataSource: AnimeRemoteDataSource
+        apiService: JikanApiService
     ): AnimeRepository {
-        return AnimeRepositoryImpl(remoteDataSource)
+        return AnimeRepositoryImpl(apiService)
     }
 
     @Provides

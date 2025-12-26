@@ -1,9 +1,10 @@
 package com.projects.animetrailers.domain.repository
 
-import com.projects.animetrailers.data.datasource.remote.ApiState
+import androidx.paging.PagingData
 import com.projects.animetrailers.domain.model.Anime
+import kotlinx.coroutines.flow.Flow
 
 interface AnimeRepository {
-    suspend fun getTopAnime(page: Int = 1, limit: Int = 25): ApiState<List<Anime>>
+    fun getTopAnime(): Flow<PagingData<Anime>>
 }
 

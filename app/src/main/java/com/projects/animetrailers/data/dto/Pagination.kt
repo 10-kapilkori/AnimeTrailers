@@ -7,11 +7,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Pagination(
     @Json(name = "current_page")
-    val currentPage: Int,
+    val currentPage: Int? = null,
     @Json(name = "has_next_page")
-    val hasNextPage: Boolean,
+    val hasNextPage: Boolean? = null,
     @Json(name = "items")
-    val items: Items,
+    val items: Items? = null,
     @Json(name = "last_visible_page")
-    val lastVisiblePage: Int
+    val lastVisiblePage: Int? = null
 )
