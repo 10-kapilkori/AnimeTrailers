@@ -24,18 +24,18 @@ class AnimePagingSource(
             Log.d(TAG, "Loading page: $page, pageSize: $pageSize")
 
             val response: AnimesDto = apiService.getTopAnime(page, pageSize)
-            
+
             // Handle nullable data list
             val animeList = response.data?.map { it.toDomain() } ?: emptyList()
 
             Log.d(TAG, "Page $page loaded: ${animeList.size} items")
-            
+
             // Handle nullable pagination
             val pagination = response.pagination
             val hasNextPage = pagination?.hasNextPage ?: false
             val currentPage = pagination?.currentPage ?: page
             val lastVisiblePage = pagination?.lastVisiblePage ?: page
-            
+
             Log.d(
                 TAG,
                 "Pagination - hasNextPage: $hasNextPage, currentPage: $currentPage, lastVisiblePage: $lastVisiblePage"

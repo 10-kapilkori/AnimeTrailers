@@ -50,7 +50,6 @@ object AnimeMapper {
             title = animeTitle,
             synopsis = animeSynopsis,
             genres = animeGenres,
-            mainCast = emptyList(), // Jikan API top anime endpoint doesn't provide cast information
             episodes = animeEpisodes,
             rating = animeRating,
             posterImageUrl = imageUrl,

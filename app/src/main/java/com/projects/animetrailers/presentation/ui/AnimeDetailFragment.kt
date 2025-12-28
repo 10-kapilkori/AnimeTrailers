@@ -1,9 +1,12 @@
 package com.projects.animetrailers.presentation.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -73,11 +76,6 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
             textViewRating.text = "${anime.rating}"
             textViewEpisodes.text = "${anime.episodes} Episodes"
             textViewSynopsis.text = anime.synopsis
-            textViewCast.text = if (anime.mainCast.isNotEmpty()) {
-                anime.mainCast.joinToString(", ")
-            } else {
-                "No cast information available"
-            }
 
             // Genres
             if (anime.genres.isNotEmpty()) {
@@ -125,10 +123,10 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
             val youtubeId = extractYouTubeId(trailerUrl)
 
             if (youtubeId != null) {
-                setupYouTubePlayer(youtubeId)
+                setupYouTubePlayer(youtubeId, trailerUrl)
             } else if (trailerUrl.startsWith("http")) {
                 // Try ExoPlayer for direct video URLs
-                val videoUri = Uri.parse(trailerUrl)
+                val videoUri = trailerUrl.toUri()
                 initializePlayer(videoUri)
             } else {
                 showPosterImage("")
@@ -158,7 +156,7 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
         }
     }
 
-    private fun setupYouTubePlayer(videoId: String) {
+    private fun setupYouTubePlayer(videoId: String, trailerUrl: String) {
         binding.apply {
             youtubePlayerView.visibility = View.VISIBLE
             playerView.visibility = View.GONE
@@ -168,6 +166,19 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
             youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
                     youTubePlayer.cueVideo(videoId, 0f)
+                }
+
+                override fun onError(
+                    youTubePlayer: YouTubePlayer,
+                    error: com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants.PlayerError
+                ) {
+                    super.onError(youTubePlayer, error)
+                    Toast.makeText(
+                        requireContext(),
+                        "Error in player, opening externally...",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    openExternalVideo(trailerUrl)
                 }
             })
         }
@@ -194,13 +205,39 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
                     super.onPlayerError(error)
                     Toast.makeText(
                         requireContext(),
-                        "Error playing video: ${error.message}",
-                        Toast.LENGTH_LONG
+                        "Error playing video, opening externally...",
+                        Toast.LENGTH_SHORT
                     ).show()
+                    openExternalVideo(videoUri.toString())
                 }
             })
 
             exoPlayer.prepare()
+        }
+    }
+
+    private fun openExternalVideo(url: String) {
+        val videoId = extractYouTubeId(url)
+
+        try {
+            if (videoId != null) {
+                try {
+                    val appIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        "vnd.youtube:$videoId".toUri()
+                    )
+                    startActivity(appIntent)
+                    return
+                } catch (e: ActivityNotFoundException) {
+                    // YouTube app not installed, disable this block to fall through to web intent
+                }
+            }
+
+            val webIntent =
+                Intent(Intent.ACTION_VIEW, url.toUri())
+            startActivity(webIntent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Could not open video link", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -229,13 +266,6 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
             exoPlayer.release()
         }
         player = null
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (player == null) {
-            // Player will be initialized when anime data is loaded
-        }
     }
 
     override fun onResume() {

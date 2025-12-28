@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.projects.animetrailers.R
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.projects.animetrailers.R
 import com.projects.animetrailers.databinding.FragmentHomeBinding
 import com.projects.animetrailers.presentation.viewmodel.AnimeViewModel
 import dagger.hilt.android.AndroidEntryPoint
