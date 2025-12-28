@@ -64,35 +64,6 @@ The project follows **Clean Architecture** principles with clear separation of c
 - **Navigation**: Android Navigation Component
 - **Pagination**: AndroidX Paging 3 with RemoteMediator
 
-## 🚀 Setup Instructions
-
-### Prerequisites
-
-- Android Studio Hedgehog or later
-- JDK 11 or higher
-- Android SDK (API level 27+)
-- Internet connection for initial data fetch
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd AnimeTrailers
-   ```
-
-2. Open the project in Android Studio
-
-3. Sync Gradle files and wait for dependencies to download
-
-4. Build and run the app on an emulator or physical device
-
-### Permissions
-
-The app requires the following permissions (automatically granted):
-- `INTERNET` - For fetching data from Jikan API
-- `ACCESS_NETWORK_STATE` - For monitoring network connectivity
-
 ## 📦 Dependencies
 
 ### Core Libraries
@@ -171,30 +142,6 @@ The app requires the following permissions (automatically granted):
 - ❌ Fetching new anime data
 - ❌ Loading new images
 - ❌ Syncing data with server
-
-## 📁 Project Structure
-
-```
-app/src/main/java/com/projects/animetrailers/
-├── data/
-│   ├── datasource/
-│   │   ├── local/          # Local data source (Room)
-│   │   └── remote/          # Remote data source (API)
-│   ├── dto/                 # Data Transfer Objects
-│   ├── local/               # Room entities and DAOs
-│   ├── mapper/              # Data mappers
-│   └── repository/          # Repository implementations
-├── domain/
-│   ├── model/               # Domain models
-│   ├── repository/          # Repository interfaces
-│   └── usecase/             # Use cases
-├── presentation/
-│   ├── ui/                  # Fragments and Adapters
-│   ├── viewmodel/           # ViewModels
-│   └── state/               # UI state classes
-├── di/                      # Dependency injection modules
-└── utils/                   # Utility classes
-```
 
 ## 🔧 Technical Details
 
