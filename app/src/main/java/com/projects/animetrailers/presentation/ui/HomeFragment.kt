@@ -32,6 +32,8 @@ class HomeFragment : Fragment() {
     private val viewModel: AnimeViewModel by viewModels()
     private lateinit var animeAdapter: AnimeAdapter
     private var loadingDialog: Dialog? = null
+    private var internetRequiredDialog: AlertDialog? = null
+    private var hasShownInternetDialog = false
 
     @Inject
     lateinit var networkMonitor: NetworkMonitor
@@ -89,13 +91,23 @@ class HomeFragment : Fragment() {
                 Pair(loadState, isOnline)
             }.collectLatest { (loadState, isOnline) ->
                 val isLoading = loadState.refresh is LoadState.Loading
+                val hasError = loadState.refresh is LoadState.Error
                 val isEmpty = animeAdapter.itemCount == 0
                 
                 // Show progress dialog on initial load when online
                 if (isLoading && isEmpty && isOnline) {
                     showLoadingDialog()
+                    hasShownInternetDialog = false // Reset flag when loading starts
                 } else {
                     dismissLoadingDialog()
+                }
+                
+                // Show internet required dialog on first launch when offline and no cached data
+                if (!isLoading && isEmpty && !isOnline && !hasShownInternetDialog) {
+                    showInternetRequiredDialog()
+                } else if (!isEmpty) {
+                    // Dismiss dialog only when data is available (after successful retry)
+                    dismissInternetRequiredDialog()
                 }
             }
         }
@@ -121,9 +133,35 @@ class HomeFragment : Fragment() {
         loadingDialog = null
     }
 
+    private fun showInternetRequiredDialog() {
+        if (internetRequiredDialog == null || !internetRequiredDialog!!.isShowing) {
+            internetRequiredDialog = AlertDialog.Builder(requireContext())
+                .setTitle("Internet Required")
+                .setMessage("No Internet connection. Please check you internet connection")
+                .setPositiveButton("Retry") { _, _ ->
+                    hasShownInternetDialog = false // Allow showing again if retry fails
+                    // Trigger refresh to make a network call
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        animeAdapter.refresh()
+                    }
+                }
+                .setCancelable(false)
+                .create()
+            
+            internetRequiredDialog?.show()
+            hasShownInternetDialog = true
+        }
+    }
+
+    private fun dismissInternetRequiredDialog() {
+        internetRequiredDialog?.dismiss()
+        internetRequiredDialog = null
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         dismissLoadingDialog()
+        dismissInternetRequiredDialog()
         _binding = null
     }
 }
