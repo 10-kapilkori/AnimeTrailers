@@ -19,8 +19,10 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.projects.animetrailers.R
 import com.projects.animetrailers.databinding.FragmentAnimeDetailBinding
 import com.projects.animetrailers.presentation.viewmodel.AnimeDetailViewModel
+import com.projects.animetrailers.utils.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
@@ -29,6 +31,9 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
     private val binding get() = _binding!!
 
     private val viewModel: AnimeDetailViewModel by viewModels()
+
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
 
     private var player: ExoPlayer? = null
     private var playWhenReady = true
@@ -106,7 +111,15 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
             if (anime.trailerUrl != null && anime.trailerUrl.isNotEmpty()) {
                 buttonPlay.visibility = View.VISIBLE
                 buttonPlay.setOnClickListener {
-                    setupVideoPlayer(anime.trailerUrl)
+                    if (networkMonitor.isOnline()) {
+                        setupVideoPlayer(anime.trailerUrl)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Video playback requires an internet connection",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             } else {
                 buttonPlay.visibility = View.GONE
@@ -217,6 +230,15 @@ class AnimeDetailFragment : Fragment(R.layout.fragment_anime_detail) {
     }
 
     private fun openExternalVideo(url: String) {
+        if (!networkMonitor.isOnline()) {
+            Toast.makeText(
+                requireContext(),
+                "Opening video requires an internet connection",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
         val videoId = extractYouTubeId(url)
 
         try {
