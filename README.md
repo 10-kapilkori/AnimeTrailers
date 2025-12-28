@@ -231,13 +231,6 @@ app/src/main/java/com/projects/animetrailers/
 - Some video URLs from API may be malformed or invalid
 - Large image files may cause memory issues on low-end devices
 
-## 📝 License
-
-[Add your license here]
-
-## 👤 Author
-
-[Add your name/contact information here]
 
 ## 🙏 Acknowledgments
 
