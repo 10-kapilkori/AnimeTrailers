@@ -1,9 +1,39 @@
 package com.projects.animetrailers.data.mapper
 
 import com.projects.animetrailers.data.dto.Data
+import com.projects.animetrailers.data.local.AnimeEntity
 import com.projects.animetrailers.domain.model.Anime
 
 object AnimeMapper {
+    fun AnimeEntity.toDomain(): Anime {
+        return Anime(
+            id = id,
+            title = title,
+            synopsis = synopsis,
+            genres = genres,
+            episodes = episodes,
+            rating = rating,
+            posterImageUrl = posterImageUrl,
+            trailerUrl = trailerUrl,
+            approved = approved
+        )
+    }
+
+    fun Anime.toEntity(): AnimeEntity {
+        return AnimeEntity(
+            id = id,
+            title = title,
+            synopsis = synopsis,
+            genres = genres,
+            episodes = episodes,
+            rating = rating,
+            posterImageUrl = posterImageUrl,
+            trailerUrl = trailerUrl,
+            approved = approved,
+            lastUpdated = System.currentTimeMillis()
+        )
+    }
+
     fun Data.toDomain(): Anime {
         // Handle nullable image URL
         val imageUrl = images?.jpg?.imageUrl?.takeIf { it.isNotEmpty() }
@@ -56,10 +86,6 @@ object AnimeMapper {
             trailerUrl = trailerUrl,
             approved = approved ?: false
         )
-    }
-
-    fun List<Data>.toDomain(): List<Anime> {
-        return map { it.toDomain() }
     }
 }
 

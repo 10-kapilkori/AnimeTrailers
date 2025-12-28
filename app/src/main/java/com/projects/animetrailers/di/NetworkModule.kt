@@ -1,11 +1,14 @@
 package com.projects.animetrailers.di
 
+import com.projects.animetrailers.data.datasource.local.AnimeLocalDataSource
 import com.projects.animetrailers.data.datasource.remote.AnimeRemoteDataSource
 import com.projects.animetrailers.data.datasource.remote.AnimeRemoteDataSourceImpl
 import com.projects.animetrailers.data.datasource.remote.JikanApiService
+import com.projects.animetrailers.data.local.AnimeDatabase
 import com.projects.animetrailers.data.repository.AnimeRepositoryImpl
 import com.projects.animetrailers.domain.repository.AnimeRepository
 import com.projects.animetrailers.domain.usecase.GetTopAnimeUseCase
+import com.projects.animetrailers.utils.NetworkMonitor
 import com.projects.animetrailers.utils.Utils
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -83,9 +86,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAnimeRepository(
-        apiService: JikanApiService
+        apiService: JikanApiService,
+        database: AnimeDatabase,
+        localDataSource: AnimeLocalDataSource,
+        networkMonitor: NetworkMonitor
     ): AnimeRepository {
-        return AnimeRepositoryImpl(apiService)
+        return AnimeRepositoryImpl(apiService, database, localDataSource, networkMonitor)
     }
 
     @Provides

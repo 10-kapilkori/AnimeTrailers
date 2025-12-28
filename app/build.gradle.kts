@@ -55,6 +55,7 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation("androidx.room:room-paging:2.7.0")
     kapt(libs.androidx.room.compiler)
     
     // Retrofit
